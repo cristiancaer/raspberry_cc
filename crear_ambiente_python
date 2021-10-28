@@ -1,0 +1,26 @@
+-go to directory where you are goint to save the new virtual environment 
+python -m venv name_venv
+_ to activate
+source path_environment/name_venv/bin/activate
+_ to run  the python script 
+_check python
+which python# to check you are using the rigth environment, the path showed must correspond to virtual environment creaded  
+python python_script.py # run the script
+_ to see packages in the environment 
+python -m pip freeze
+_ if you want to save the list
+python -m pip freeze | tee requirements.txt
+_if you wnat to install packages from files
+python -m pip -r requirements.txt
+pip freeze
+_ if you want to save the list
+python -m pip freeze | tee requirements.txt
+_if you wnat to install packages from files
+python -m pip -r requirements.txt
+pip freeze
+_ if you want to save the list
+python -m pip freeze | tee requirements.txt
+_if you wnat to install packages from files
+python -m pip -r requirements.txt
+
+
