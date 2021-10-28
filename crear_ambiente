@@ -1,0 +1,2 @@
+conda create -n env python=3.4 -c conda-forge
+
