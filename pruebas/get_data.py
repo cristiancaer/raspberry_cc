@@ -14,22 +14,28 @@ class Communication(Thread):
         self.time_betwin_request=2# in seconds
         self.server_is_working=False
         self.ERROR_WEB_SERVER_NOT_WORKING="Web server is not working"
+        self.ERROR_WRONG_URL=" page not find. Check url for data_available  in Connection class"
         self.ERROR_NO_DATA_AVAILABLE="Server working. But mass_flow.py isn't loading data"
     def get_last_data(self):
         try:
             res= requests.get(self.url)
-            self.server_is_working=True
+            if res.status_code==200:
+                self.server_is_working=True
+            elif res.status_code==404:
+                print(self.ERROR_WRONG_URL)
+            
         except :
             print(self.ERROR_WEB_SERVER_NOT_WORKING)
             self.server_is_working=False
         info={}
         if self.server_is_working:
-            soup=BeautifulSoup(res.text,'html.parser')
-            data=soup.find_all(class_='data')
-            for tag in data:
-                tag=tag.text.strip()
-                key,value=tag.split(self.separator)
-                info.setdefault(key,value)
+                soup=BeautifulSoup(res.text,'html.parser')
+                data=soup.find_all(class_='data')
+                for tag in data:
+                    tag=tag.text.strip()
+                    key,value=tag.split(self.separator)
+                    info.setdefault(key,value)
+                
         return info
     def run(self) -> None:
         while self.running:
@@ -41,10 +47,11 @@ class Communication(Thread):
                 else:
                     if  self.watchdog:
                         self.watchdog-=1
-                    else:
-                        print(self.ERROR_NO_DATA_AVAILABLE)
+                        print('data not find')
+                    else:           
                         self.que.put(None)
-                
+                        print(self.ERROR_NO_DATA_AVAILABLE)
+            
             sleep(2)
 class AnalogOput(Thread):
     def __init__(self, minInput,maxIput,minOutput,maxOutput,que_mass_flow) -> None:
@@ -73,7 +80,7 @@ class AnalogOput(Thread):
 
 if __name__=='__main__':
     que_mass_flow=Queue()
-    url='http://127.0.0.1:5000/connection/data_available/'
+    url='http://112.168.1.1:5000/connection/data_available/'
     comm=Communication(url,que_mass_flow)
     comm.start()
     analogOutput=AnalogOput(0,1,0,5,que_mass_flow)
