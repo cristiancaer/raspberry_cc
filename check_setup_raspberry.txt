@@ -1,4 +1,5 @@
 #setup raspberry to handle DAC modulo
+# ensure DAC supply is less than 5v, i, if   it is higher it's posible that the I2c chanel does not recognize the device
 #you can find more information in https://wiki.dfrobot.com/Gravity__12-Bit_I2C_DAC_Module_SKU__DFR0552
 #set up:
 sudo raspi-config
@@ -6,8 +7,15 @@ sudo raspi-config
 # install python libraries
 sudo apt-get update
 sudo apt-get install build-essential python-dev python-smbus git
-#Download driver library, go to proyect directory and type
+#go to proyect directory
+#not forget activate python virtual enviroment if you are working with one
+# 
 git clone https://github.com/DFRobot/DFRobot_MCP4725.git
 cd DFRobot_MCP4725/RaspberryPi/python
+# if you are working in virtual  enviroment you must type
+sudo $(which python)  DFRobot_MCP4725.py # This is necesary to run file .py whit the python virtual enviroment
+# if you are not woring in virtul enviroment just type
+sudo python DFRobot_MCP4725.py
+
 
 

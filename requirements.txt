@@ -5,5 +5,6 @@ charset-normalizer==2.0.7
 idna==3.3
 pkg-resources==0.0.0
 requests==2.26.0
+smbus==1.1.post2
 soupsieve==2.2.1
 urllib3==1.26.7
