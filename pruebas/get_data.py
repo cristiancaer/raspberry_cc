@@ -49,11 +49,7 @@ class Communication(Thread):
                 else:
                     if  self.watchdog:
                         self.watchdog-=1
-<<<<<<< Updated upstream
-                        print('data not find')
-=======
                         print('waiting data')
->>>>>>> Stashed changes
                     else:           
                         self.que.put(None)
                         print(self.ERROR_NO_DATA_AVAILABLE)
@@ -68,9 +64,20 @@ class AnalogOput(Thread):
         self.minOutput=minOutput
         self.maxOutput=maxOutput
         self.que_mass_flow=que_mass_flow
+        self.buffer_max_output=0
+        self.buffer_max_output=0
     def convert_value(self,value):
         output=self.minOutput +(self.maxOutput-self.minOutput)/(self.maxInput-self.minInput)*(value-self.minInput)
+        output=self.check_extreme_values(output)
         return output
+    def check_extreme_values(self,value):
+        if value>self.maxOutput:
+            self.buffer_max_output=value
+            saturation_value=self.maxOutput
+        if value<self.minOutput:
+            self.buffer_min_output=value
+            saturation_value=self.minOutput
+        return saturation_value
     def run(self):
         while self.runing:
             if not self.que_mass_flow.empty():
