@@ -20,7 +20,6 @@ class Communication(Thread):
     def get_last_data(self):
         try:
             res= requests.get(self.url,timeout=self.TIMEOUT)
-            print(res.status_code)
             if res.status_code==200:
                 self.server_is_working=True
             elif res.status_code==404:
@@ -49,7 +48,7 @@ class Communication(Thread):
                 else:
                     if  self.watchdog:
                         self.watchdog-=1
-                        print('data not find')
+                        
                     else:           
                         self.que.put(None)
                         print(self.ERROR_NO_DATA_AVAILABLE)
