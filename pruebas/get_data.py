@@ -1,7 +1,7 @@
 import requests
 from threading import Thread
 from queue import Queue
-from time import sleep
+from time import sleep, time
 from bs4 import BeautifulSoup
 class Communication(Thread):
     def __init__(self,url,que_mass_flow) -> None:
@@ -16,15 +16,17 @@ class Communication(Thread):
         self.ERROR_WEB_SERVER_NOT_WORKING="Web server is not working. \n 1) Check if server is up.\n 2) Check if url is correct"
         self.ERROR_WRONG_URL=" page not find. Check url for data_available  in Connection class"
         self.ERROR_NO_DATA_AVAILABLE="Server working. But mass_flow.py isn't loading data"
+        self.TIMEOUT=5
     def get_last_data(self):
         try:
-            res= requests.get(self.url)
+            res= requests.get(self.url,timeout=self.TIMEOUT)
+            print(res.status_code)
             if res.status_code==200:
                 self.server_is_working=True
             elif res.status_code==404:
                 print(self.ERROR_WRONG_URL)
-            
-        except :
+        
+        except:
             print(self.ERROR_WEB_SERVER_NOT_WORKING)
             self.server_is_working=False
         info={}
