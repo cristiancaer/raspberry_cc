@@ -49,7 +49,11 @@ class Communication(Thread):
                 else:
                     if  self.watchdog:
                         self.watchdog-=1
+<<<<<<< Updated upstream
                         print('data not find')
+=======
+                        print('waiting data')
+>>>>>>> Stashed changes
                     else:           
                         self.que.put(None)
                         print(self.ERROR_NO_DATA_AVAILABLE)
