@@ -20,7 +20,6 @@ class Communication(Thread):
     def get_last_data(self):
         try:
             res= requests.get(self.url,timeout=self.TIMEOUT)
-            print(res.status_code)
             if res.status_code==200:
                 self.server_is_working=True
             elif res.status_code==404:
@@ -96,7 +95,7 @@ if __name__=='__main__':
     url='http://112.168.1.1:5000/connection/data_available/'
     comm=Communication(url,que_mass_flow)
     comm.start()
-    analogOutput=AnalogOput(0,1,0,5,que_mass_flow)
+    analogOutput=AnalogOput(0,100,0,5,que_mass_flow)
     analogOutput.start()
     
     while True:
