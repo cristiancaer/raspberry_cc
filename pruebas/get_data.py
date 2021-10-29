@@ -70,6 +70,7 @@ class AnalogOput(Thread):
         output=self.check_extreme_values(output)
         return output
     def check_extreme_values(self,value):
+        saturation_value=value
         if value>self.maxOutput:
             self.buffer_max_output=value
             saturation_value=self.maxOutput
