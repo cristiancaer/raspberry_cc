@@ -13,7 +13,7 @@ class Communication(Thread):
         self.watchdog=5# number of times witout request before raise exception
         self.time_betwin_request=2# in seconds
         self.server_is_working=False
-        self.ERROR_WEB_SERVER_NOT_WORKING="Web server is not working"
+        self.ERROR_WEB_SERVER_NOT_WORKING="Web server is not working. \n 1) Check if server is up.\n 2) Check if url is correct"
         self.ERROR_WRONG_URL=" page not find. Check url for data_available  in Connection class"
         self.ERROR_NO_DATA_AVAILABLE="Server working. But mass_flow.py isn't loading data"
     def get_last_data(self):
