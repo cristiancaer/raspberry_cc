@@ -1,3 +1,5 @@
 env
 env/
-**__cache__
+**__cache__/
+app/control/DFRobot_MCP4725/__pycache__/
+

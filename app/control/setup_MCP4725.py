@@ -77,14 +77,16 @@ class Septup_MCP4725:
         return output
 if __name__=='__main__':
     dac=Septup_MCP4725('60')
-    # if dac.is_working:
-    #     vol_ref=int(input("reference voltage [mv]?:"))
-    #     dac.set_ref_voltage(vol_ref)
-    #     while True:
-    #         vol=input("voltage output [mv]? :")
-    #         if vol.isnumeric:
-    #             vol=int(vol)
-    #             dac.clear_cli
-    #         else:
-    #             break
+    if dac.is_working:
+         vol_ref=int(input("reference voltage [mv]?:"))
+         dac.set_ref_voltage(vol_ref)
+         while True:
+             vol=input("voltage output [mv]? :")
+             if vol.isnumeric:
+                 vol=int(vol)
+                 dac.clear_cli
+             else:
+                 break
+    else:
+        print("device is not working")
             
