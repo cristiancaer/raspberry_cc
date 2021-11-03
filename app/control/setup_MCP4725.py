@@ -4,19 +4,21 @@ import shlex
 import subprocess
 import smbus
 from DFRobot_MCP4725.DFRobot_MCP4725 import *
+from time import sleep
 class Septup_MCP4725:
     # voltage must be in millivolts
     COMMAND_I2C_DETECT=shlex.split("i2cdetect -y 1")# shlex.split is needed to accommodate comand to subprocess function
     Message_INTERFACE_DISABLE="Interface disable. Check sudo raspi-config/ interface options/I2C"
     MESSAGE_INTERFACE_ENABLE="Interface up"
     Message_DAC_NOT_FIND=" module in addresses no detected, addr: "
-    MESSAGE_DAC_DETECTED="You can start to work. Device detected in "
+    MESSAGE_DAC_DETECTED="You can start to work. Device successfully detected in addr "
     MESSAGE_LIST_DEVISE_DETECTED="Device detected: "
     MCP4725A0_IIC_Address0=61
     MCP4725A0_IIC_Address1=60
     addr=""
     is_working=False
     ref_voltage=1000
+    bus=smbus.SMBus(1)
     
     def __init__(self,addr) -> None:
         self.set_addr_(addr)
