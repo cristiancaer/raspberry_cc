@@ -21,18 +21,18 @@ class Septup_MCP4725:
     bus=smbus.SMBus(1)
     
     def __init__(self,addr) -> None:
-        self.set_addr_(addr)
-        if  self.i2c_interface_is_enable:
-            print("Interface up")
-            detected,list_device_chanel6=self.device_detected(chanel=6)
-            if detected:
-                print(self.MESSAGE_DAC_DETECTED, self.addr)
-                self.is_working=True
+        if self.set_addr_(addr):
+            if  self.i2c_interface_is_enable:
+                print("Interface up")
+                detected,list_device_chanel6=self.device_detected(chanel=6)
+                if detected:
+                    print(self.MESSAGE_DAC_DETECTED, self.addr)
+                    self.is_working=True
+                else:
+                    print(self.Message_DAC_NOT_FIND)
+                    print(self.MESSAGE_LIST_DEVISE_DETECTED,list_device_chanel6)
             else:
-                print(self.Message_DAC_NOT_FIND)
-                print(self.MESSAGE_LIST_DEVISE_DETECTED,list_device_chanel6)
-        else:
-            print(self.Message_INTERFACE_DISABLE)
+                print(self.Message_INTERFACE_DISABLE)
         
     def clear_cli(self):
         os.system('clear')
@@ -54,12 +54,20 @@ class Septup_MCP4725:
         _,output=self.run_command(self.COMMAND_I2C_DETECT)
         row_addresses_chanel=output.split("\n")[chanel+1]# 0 row is head,addresses start in row 1, so row 7 belongs to divices whit 6x addresses
         list_addresses_chanel=row_addresses_chanel.split(' ')[1:]# 0 column is head,addresses start in col 1
-        is_device=self.addr in list_addresses_chanel
+        is_device=hex(self.addr)[2:] in list_addresses_chanel# [2:] to compare just numeric part
         return is_device,list_addresses_chanel
     
     def set_addr_(self,addr):
-        self.addr=addr
-    
+        # addr must be str, remember addr is hex,
+        ret=False
+        if isinstance(addr,str):
+            if addr.find('x'):
+                addr=addr[2:]
+            self.addr=int(addr,16)
+            ret=True
+        else:
+            print("addr must be str")
+        return ret
     def set_ref_voltage(self,vol):
         self.ref_voltage=vol
     
