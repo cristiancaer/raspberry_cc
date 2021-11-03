@@ -10,7 +10,11 @@ class Septup_MCP4725:
     COMMAND_I2C_DETECT=shlex.split("i2cdetect -y 1")# shlex.split is needed to accommodate comand to subprocess function
     Message_INTERFACE_DISABLE="Interface disable. Check sudo raspi-config/ interface options/I2C"
     MESSAGE_INTERFACE_ENABLE="Interface up"
+<<<<<<< HEAD
     Message_DAC_NOT_FIND="Module in addresses no detected, addr: "
+=======
+    Message_DAC_NOT_FIND=" module in addresses no detected, addr: "
+>>>>>>> a7143ef6e957f4b7bcc4b64df456ac862bb83110
     MESSAGE_DAC_DETECTED="You can start to work. Device successfully detected in addr "
     MESSAGE_LIST_DEVISE_DETECTED="Device detected: "
     MCP4725A0_IIC_Address0=61
