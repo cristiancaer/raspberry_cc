@@ -19,13 +19,14 @@ class Communication(Thread):
         self.ERROR_WRONG_URL=" page not find. Check url for data_available  in Connection class"
         self.ERROR_NO_DATA_AVAILABLE="Server working. But mass_flow.py isn't loading data"
         self.TIMEOUT=3
+        self.requests=requests.session()
     # check sever is working
         self.get_request_from_page('/index/')
     def get_request_from_page(self,url_page):
         res=404
         try:
             url=self.url_server+url_page
-            res= requests.get(url,timeout=self.TIMEOUT)
+            res= self.requests.get(url,timeout=self.TIMEOUT)
             if res.status_code==200:
                 self.server_is_working=True
             elif res.status_code==404:
