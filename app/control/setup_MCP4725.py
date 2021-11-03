@@ -85,6 +85,12 @@ class Septup_MCP4725:
         if vol<0:
             output=0
         return output
+    def close_device(self):
+        self.output_voltage_EEPROM(0)
+        self.output_voltage(0)
+        self.bus.close()
+        self.is_working=False
+        
 if __name__=='__main__':
     dac=Septup_MCP4725('60')
     if dac.is_working:
@@ -99,6 +105,7 @@ if __name__=='__main__':
                  dac.clear_cli()
              else:
                  break
+         dac.close_device()
     else:
         print("device is not working")
             
