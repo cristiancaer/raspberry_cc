@@ -21,7 +21,7 @@ class Septup_MCP4725:
     bus=smbus.SMBus(1)
     
     def __init__(self,addr) -> None:
-        if self.set_addr_(addr):
+        if self.set_addr(addr):
             if  self.i2c_interface_is_enable:
                 print("Interface up")
                 detected,list_device_chanel6=self.device_detected(chanel=6)
@@ -57,11 +57,11 @@ class Septup_MCP4725:
         is_device=hex(self.addr)[2:] in list_addresses_chanel# [2:] to compare just numeric part
         return is_device,list_addresses_chanel
     
-    def set_addr_(self,addr):
+    def set_addr(self,addr):
         # addr must be str, remember addr is hex,
         ret=False
         if isinstance(addr,str):
-            if addr.find('x'):
+            if addr.find('x')!=-1:
                 addr=addr[2:]
             self.addr=int(addr,16)
             ret=True
