@@ -17,10 +17,10 @@ class Septup_MCP4725:
     MCP4725A0_IIC_Address1=60
     addr=""
     is_working=False
-    ref_voltage=1000
+    ref_voltage=0
     bus=smbus.SMBus(1)
     
-    def __init__(self,addr) -> None:
+    def __init__(self,addr,ref_voltage) -> None:
         if self.set_addr(addr):
             if  self.i2c_interface_is_enable:
                 print("Interface up")
@@ -80,6 +80,9 @@ class Septup_MCP4725:
         self.bus.write_word_data(self.addr,MCP4725_WriteEEPROM_CMD | (MCP4725_NORMAL_MODE<<1),int((vol/float(self.ref_voltage))*255))
     def check_saturation(self,vol):
         output=vol
+        if not self.ref_voltage:
+            output=0
+            print("Voltage ref is not set !")
         if vol>self.ref_voltage:
             output=self.ref_voltage
         if vol<0:
