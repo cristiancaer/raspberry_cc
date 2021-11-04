@@ -21,6 +21,9 @@ class Communication(Thread):
         self.TIMEOUT=3
         self.requests=requests.session()
     # check sever is working
+        self.check_server()
+    def check_server(self):
+        system('clear')
         self.get_request_from_page('/index/')
     def get_request_from_page(self,url_page):
         res=404
@@ -64,6 +67,8 @@ class Communication(Thread):
 
             if self.server_is_working:
                 self.download_data()
+            else: 
+                self.check_server()
             sleep(2)
 def print_que(que):
     while True:
