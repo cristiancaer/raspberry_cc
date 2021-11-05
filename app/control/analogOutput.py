@@ -57,7 +57,7 @@ if __name__=='__main__':
         analogOutput=AnalogOutput(min_mass_flow,max_mass_flow,min_output_voltage,max_output_voltage,que_mass_flow,dac)
         analogOutput.start()
         for i in range(10):
-            mass_flow={'mass_flow',randint(min_mass_flow,max_mass_flow)}
+            mass_flow={'mass_flow':randint(min_mass_flow,max_mass_flow)}
             que_mass_flow.put(mass_flow)
             sleep(0.1)
             print(analogOutput.voltage_now)
