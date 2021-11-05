@@ -54,10 +54,11 @@ class App(Thread):
             while self.app_running:
                 system('clear')
                 print(value_result)
+                print("output_voltage: ",app.analog_output.voltage_now)
                 for i,option in enumerate(self.MENU_OPTIONS):
                     print('{}) '.format(i+1),option)
                 menu_option=input("press en option: ")
-                if menu_option.isnumeric:
+                if menu_option and (menu_option.isnumeric):
                     menu_option=int(menu_option)-1
                     if  menu_option in range(len(self.MENU_OPTIONS)):
                         value_result=self.MENU_OPTIONS[menu_option]
@@ -83,9 +84,13 @@ class App(Thread):
 if __name__=='__main__':
     app=App()
     app.start()
-    while True:
-        print(app.get_app_message())
-        if not app.app_running:
-            break
-        sleep(5)
-    
+    try: 
+        while True:
+            print(app.get_app_message())
+            print("output_voltage: ",app.analog_output.voltage_now)
+            if not app.app_running:
+                break
+            sleep(5)
+    except:
+        print('forced stop')
+        app.close()

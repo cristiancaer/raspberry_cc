@@ -19,6 +19,7 @@ class Communication(Thread):
         self.ERROR_WRONG_URL=" page not find. Check url for data_available  in Connection class"
         self.ERROR_NO_DATA_AVAILABLE="Server working. But mass_flow.py isn't loading data"
         self.ALL_IS_OK='All in communication is ok'
+        self.CONNECTING='Waiting'
         self.TIMEOUT=3
         self.requests=requests.session()
         self.status_message=''
@@ -61,6 +62,7 @@ class Communication(Thread):
         else:
             if  self.watchdog:
                 self.watchdog-=1
+                self.status_message=self.CONNECTING
             else:           
                 self.que.put(None)
                 self.status_message=self.ERROR_NO_DATA_AVAILABLE

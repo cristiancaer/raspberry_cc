@@ -45,6 +45,7 @@ class AnalogOutput(Thread):
                 else:
                     self.value_mass_flow_is_ok=False
                     self.dac_device.output_voltage_mv(0)
+                    self.voltage_now=0
         self.dac_device.close_device()
 if __name__=='__main__':
     try:# if an error raise this is going to let analogOutput closes the adc device
