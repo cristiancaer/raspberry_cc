@@ -27,6 +27,7 @@ class Septup_MCP4725:
                 detected,list_device_chanel6=self.device_detected(chanel=6)
                 if detected:
                     print(self.MESSAGE_DAC_DETECTED, self.addr)
+                    self.set_ref_voltage(ref_voltage)
                     self.is_working=True
                 else:
                     print(self.Message_DAC_NOT_FIND)
