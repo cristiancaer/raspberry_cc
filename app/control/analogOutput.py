@@ -39,12 +39,12 @@ class AnalogOutput(Thread):
                 if info_mass_flow!=None:
                     mass_flow=float(info_mass_flow.get('mass_flow',0))
                     mass_flow_voltage=self.convert_value(mass_flow)
-                    self.dac_device.output_voltage(mass_flow_voltage)
+                    self.dac_device.output_voltage_mv(mass_flow_voltage)
                     self.voltage_now=mass_flow_voltage
                     self.value_mass_flow_is_ok=True
                 else:
                     self.value_mass_flow_is_ok=False
-                    self.dac_device.output_voltage(0)
+                    self.dac_device.output_voltage_mv(0)
         self.dac_device.close_device()
 if __name__=='__main__':
     try:# if an error raise this is going to let analogOutput closes the adc device
