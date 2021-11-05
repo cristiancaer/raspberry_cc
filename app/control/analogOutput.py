@@ -1,6 +1,6 @@
 from os import error, system
 from threading import Thread
-from setup_MCP4725 import Septup_MCP4725
+from .setup_MCP4725 import Septup_MCP4725
 from queue import Queue
 from random import randint
 from time import sleep

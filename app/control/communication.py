@@ -18,12 +18,13 @@ class Communication(Thread):
         self.ERROR_WEB_SERVER_NOT_WORKING="Web server is not working. \n 1) Check if there is IP/ethernet connection.\n 2) Check if server is up.\n 3) Check if url is correct"
         self.ERROR_WRONG_URL=" page not find. Check url for data_available  in Connection class"
         self.ERROR_NO_DATA_AVAILABLE="Server working. But mass_flow.py isn't loading data"
+        self.ALL_IS_OK='All in communication is ok'
         self.TIMEOUT=3
         self.requests=requests.session()
+        self.status_message=''
     # check sever is working
         self.check_server()
     def check_server(self):
-        system('clear')
         self.get_request_from_page('/index/')
     def get_request_from_page(self,url_page):
         res=404
@@ -32,11 +33,12 @@ class Communication(Thread):
             res= self.requests.get(url,timeout=self.TIMEOUT)
             if res.status_code==200:
                 self.server_is_working=True
+                self.status_message=self.ALL_IS_OK
             elif res.status_code==404:
-                print(self.ERROR_WRONG_URL)
+                self.status_message=self.ERROR_WRONG_URL
         
         except:
-            print(self.ERROR_WEB_SERVER_NOT_WORKING)
+            self.status_message=self.ERROR_WEB_SERVER_NOT_WORKING
             self.server_is_working=False
         return res
     def get_last_data(self):
@@ -61,7 +63,7 @@ class Communication(Thread):
                 self.watchdog-=1
             else:           
                 self.que.put(None)
-                print(self.ERROR_NO_DATA_AVAILABLE)
+                self.status_message=self.ERROR_NO_DATA_AVAILABLE
     def run(self) -> None:
         while self.running:
 
@@ -70,10 +72,17 @@ class Communication(Thread):
             else: 
                 self.check_server()
             sleep(2)
-def print_que(que):
+    def get_status_message(self):
+        return self.status_message
+def print_que(que,message):
+    buffer_message=""
     while True:
-        if not que.empty():
+        if buffer_message!=message():
+            system('clear')
+            buffer_message=message()
+            print(buffer_message)
             print('press c to exit')
+        if not que.empty():
             print(que.get())
 
 if __name__=='__main__':
@@ -82,7 +91,7 @@ if __name__=='__main__':
     url='http://112.168.1.1:5000'
     comm=Communication(url,que_mass_flow)
     comm.start()
-    work=Thread(target=print_que,args=(que_mass_flow,),daemon=True)
+    work=Thread(target=print_que,args=(que_mass_flow,comm.get_status_message),daemon=True)
     work.start()
     while True:
         c=input("press c to exit: \n")

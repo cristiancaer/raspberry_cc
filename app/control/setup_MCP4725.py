@@ -1,9 +1,8 @@
-import DFRobot_MCP4725
 import os
 import shlex
 import subprocess
 import smbus
-from DFRobot_MCP4725.DFRobot_MCP4725 import *
+from .DFRobot_MCP4725.DFRobot_MCP4725 import *
 from time import sleep
 class Septup_MCP4725:
     # voltage must be in millivolts
