@@ -7,6 +7,8 @@ from queue import Queue
 from time import sleep
 class App(Thread):
     def __init__(self):
+        super().__init__()
+        self.app_running=True
         # Dac Config
         self.ref_voltage_mv=3300
         self.addr='60'
@@ -17,12 +19,12 @@ class App(Thread):
         self.max_mass_flow=60
         self.min_output_voltage_mv=0
         self.max_output_voltage_mv=self.ref_voltage_mv
-        self.analogOutput=AnalogOutput(self.min_mass_flow,self.max_mass_flow,self.min_output_voltage_mv,self.max_output_voltage_mv,self.que_mass_flow,self.dac)
-        self.analogOutput.start()
+        self.analog_output=AnalogOutput(self.min_mass_flow,self.max_mass_flow,self.min_output_voltage_mv,self.max_output_voltage_mv,self.que_mass_flow,self.dac)
+        self.analog_output.start()
         # comunication config
         self.url='http://112.168.1.1:5000'
-        self.comunication=Communication(self.url,self.que_mass_flow)
-        self.comunication.start()
+        self.communication=Communication(self.url,self.que_mass_flow)
+        self.communication.start()
         # list menu functions
         self.MENU_OPTIONS=['Status dac is working: ',
                   'Status i2c interface is up: ',
@@ -30,47 +32,60 @@ class App(Thread):
                   'Status  server is working: ',
                   'Ref dac voltage :',
                   'Voltage dac now: ',
-                  'Communication status message: '
+                  'I2c available direcctions: ',
+                  'Communication status message: ',
                   'exit: '
                  ]
-        self.menu_functions=[ self.dac.is_working(),
-                              self.dac.i2c_interface_is_enable(),
-                              self.que_mass_flow.qsize(),
-                              lambda: self.comunication.server_is_working,
+        self.menu_functions=[ lambda:self.dac.is_working,
+                              self.dac.i2c_interface_is_enable,
+                              self.que_mass_flow.qsize,
+                              lambda: self.communication.server_is_working,
                               lambda:self.dac.ref_voltage,
-                              lambda:self.analogOutput.voltage_now,
-                              self.communication.get_message_status(),
-                              sys.exit(0)
+                              lambda:self.analog_output.voltage_now,
+                              self.get_list_device_i2c_detected,
+                              self.communication.get_status_message,
+                              self.close
                             ]
-
+    
     def run(self):
+        print("hi")
         value_result=""
         try:
-            while True:
+            while self.app_running:
                 system('clear')
                 print(value_result)
                 for i,option in enumerate(self.MENU_OPTIONS):
-                    print(f'{i+1}) ',option)
+                    print('{}) '.format(i+1),option)
                 menu_option=input("press en option: ")
                 if menu_option.isnumeric:
                     menu_option=int(menu_option)-1
                     if  menu_option in range(len(self.MENU_OPTIONS)):
-                        value_result=f'{i+1}) '+self.MENU_OPTIONS[i]
-                        value_result+=self.menu_functions[menu_option]
+                        value_result=self.MENU_OPTIONS[menu_option]
+                        value_result+=str(self.menu_functions[menu_option]())
                     else:
                         value_result="Option  not recognized"
 
                 else:
                     value_result="Input must be a number"
-        except:
+        except Exception as e :
+            print(e)
             print('main interrupted')
-            self.analogOutput.runing=False
+            self.close()
     def get_app_message(self):
-        return self.comunication.status_message
+        return self.communication.status_message
+    def close(self):
+        self.app_running=False
+        self.communication.running=False
+        self.analog_output.runing=False
+    def get_list_device_i2c_detected(self):
+        _,list_device=self.dac.device_detected(chanel=6)
+        return list_device
 if __name__=='__main__':
     app=App()
     app.start()
-    while True():
+    while True:
         print(app.get_app_message())
+        if not app.app_running:
+            break
         sleep(5)
     

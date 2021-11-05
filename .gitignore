@@ -1,5 +1,9 @@
 env
 env/
-**__cache__/
+**__pycache__/
+**__pycache__
 app/control/DFRobot_MCP4725/__pycache__/
-
+app/control/__pycache__/
+**app/control/__pycache__/
+app/control/__pycache__/analogOutput.cpython-37.pyc
+app/control/__pycache__/setup_MCP4725.cpython-37.pyc
