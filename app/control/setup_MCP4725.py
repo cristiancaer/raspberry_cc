@@ -97,7 +97,7 @@ class Septup_MCP4725:
         self.is_working=False
         
 if __name__=='__main__':
-    dac=Septup_MCP4725('60')
+    dac=Septup_MCP4725('60',3300)
     if dac.is_working:
          vol_ref=int(input("reference voltage [mv]?:"))
          dac.set_ref_voltage(vol_ref)

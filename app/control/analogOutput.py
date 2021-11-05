@@ -1,9 +1,10 @@
-from os import error
+from os import error, system
 from threading import Thread
 from setup_MCP4725 import Septup_MCP4725
 from queue import Queue
 from random import randint
 from time import sleep
+import sys
 class AnalogOutput(Thread):
     def __init__(self, minInput,maxIput,minOutput,maxOutput,que_mass_flow,dac_device) -> None:
         super().__init__()
@@ -63,7 +64,8 @@ if __name__=='__main__':
             print(analogOutput.voltage_now)
             sleep(10)
         analogOutput.runing=False
-    except error:
-        print(error)
+    except:
+        print('main interrupted')
         analogOutput.runing=False
+        sys.exit(0)
 
