@@ -91,9 +91,9 @@ class Septup_MCP4725:
             output=0
         return output
     def close_device(self):
-        self.output_voltage_EEPROM(0)
-        self.output_voltage(0)
-        sleep(0.1)
+        self.output_voltage_EEPROM_mv(0)
+        self.output_voltage_EEPROM_mv(0)
+        sleep(0.2)
         self.bus.close()
         self.is_working=False
 
