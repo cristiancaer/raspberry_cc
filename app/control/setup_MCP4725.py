@@ -28,6 +28,7 @@ class Septup_MCP4725:
                 if detected:
                     print(self.MESSAGE_DAC_DETECTED, hex(self.addr))
                     self.set_ref_voltage(ref_voltage)
+                    self.output_voltage_mv(0)
                     self.is_working=True
                 else:
                     print(self.Message_DAC_NOT_FIND)
@@ -72,11 +73,11 @@ class Septup_MCP4725:
     def set_ref_voltage(self,vol):
         self.ref_voltage=vol
     
-    def output_voltage(self,vol):
+    def output_voltage_mv(self,vol):
         vol=self.check_saturation(vol)
         self.bus.write_word_data(self.addr,MCP4725_Write_CMD | (MCP4725_NORMAL_MODE<<1),int((vol/float(self.ref_voltage))*255))  
     
-    def output_voltage_EEPROM(self,vol):
+    def output_voltage_EEPROM_mv(self,vol):
         vol=self.check_saturation(vol)
         self.bus.write_word_data(self.addr,MCP4725_WriteEEPROM_CMD | (MCP4725_NORMAL_MODE<<1),int((vol/float(self.ref_voltage))*255))
     def check_saturation(self,vol):
@@ -95,7 +96,7 @@ class Septup_MCP4725:
         sleep(0.1)
         self.bus.close()
         self.is_working=False
-        
+
 if __name__=='__main__':
     dac=Septup_MCP4725('60',3300)
     if dac.is_working:
