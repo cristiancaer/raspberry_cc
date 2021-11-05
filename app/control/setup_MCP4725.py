@@ -26,7 +26,7 @@ class Septup_MCP4725:
                 print("Interface up")
                 detected,list_device_chanel6=self.device_detected(chanel=6)
                 if detected:
-                    print(self.MESSAGE_DAC_DETECTED, self.addr)
+                    print(self.MESSAGE_DAC_DETECTED, hex(self.addr))
                     self.set_ref_voltage(ref_voltage)
                     self.is_working=True
                 else:
@@ -92,6 +92,7 @@ class Septup_MCP4725:
     def close_device(self):
         self.output_voltage_EEPROM(0)
         self.output_voltage(0)
+        sleep(0.1)
         self.bus.close()
         self.is_working=False
         

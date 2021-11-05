@@ -38,8 +38,6 @@ class AnalogOutput(Thread):
                     mass_flow_voltage=self.convert_value(mass_flow)
                     self.dac_device.output_voltage(mass_flow_voltage)
                     self.value_mass_flow_is_ok=True
-                    print('mass',mass_flow)
-                    print('voltage',mass_flow_voltage)
                 else:
                     self.value_mass_flow_is_ok=False
                     self.dac_device.output_voltage(0)
@@ -54,9 +52,9 @@ if __name__=='__main__':
     max_output_voltage=3300
     analogOutput=AnalogOutput(min_mass_flow,max_mass_flow,min_output_voltage,max_output_voltage,que_mass_flow,dac)
     for i in range(10):
-        mass_flow=randint(min_mass_flow,max_mass_flow)
+        mass_flow={'mass_flow',randint(min_mass_flow,max_mass_flow)}
         que_mass_flow.put(mass_flow)
-        sleep(2)
+        sleep(10)
 
     analogOutput.runing=False
-    
+
