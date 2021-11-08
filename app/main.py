@@ -1,10 +1,10 @@
-import queue
 from control.analogOutput import *
 from control.setup_MCP4725 import *
 from control.communication import *
 from threading import Thread
 from queue import Queue
 from time import sleep
+import traceback
 class App(Thread):
     def __init__(self):
         super().__init__()
@@ -69,8 +69,8 @@ class App(Thread):
 
                 else:
                     value_result="Input must be a number"
-        except Exception as e :
-            print(e)
+        except Exception :
+            traceback.print_exc()
             print('main interrupted')
             self.close()
     def get_app_message(self):
@@ -95,6 +95,7 @@ if __name__=='__main__':
             if not app.app_running:
                 break
             sleep(5)
-    except:
+    except Exception:
+        traceback.print_exc()
         print('forced stop')
         app.close()
