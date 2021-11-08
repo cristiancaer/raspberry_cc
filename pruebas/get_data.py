@@ -88,9 +88,6 @@ class AnalogOput(Thread):
                     print('mass',mass_flow)
                     print('voltage',mass_flow_voltage)
 
-
-
-
 if __name__=='__main__':
     que_mass_flow=Queue()
     url='http://112.168.1.1:5000/connection/data_available/'
