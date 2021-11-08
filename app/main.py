@@ -24,6 +24,7 @@ class App(Thread):
         # comunication config
         self.url='http://112.168.1.1:5000'
         self.communication=Communication(self.url,self.que_mass_flow)
+        self.communication.set_raspberry_status(self.update_raspberry_status)
         self.communication.start()
         # list menu functions
         self.MENU_OPTIONS=['Status dac is working: ',
@@ -81,9 +82,9 @@ class App(Thread):
     def get_list_device_i2c_detected(self):
         _,list_device=self.dac.device_detected(chanel=6)
         return list_device
-    def send_raspberry_status(self):
+    def update_raspberry_status(self):
         dict_status={self.MENU_OPTIONS[i]:self.menu_functions[i]() for i in range(len(self.MENU_OPTIONS)-1)}# beware! last option function is gonna to close de app 
-        self.communication.set_raspberry_status(dict_status)
+        return dict_status
 if __name__=='__main__':
     app=App()
     app.start()

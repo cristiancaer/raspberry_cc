@@ -6,8 +6,9 @@ from bs4 import BeautifulSoup
 from os import system
 
 class Communication(Thread):
-    def __init__(self,url,que_mass_flow) -> None:
+    def __init__(self,url,que_mass_flow,function_update_raspberry_status=0) -> None:
         super().__init__(daemon=True)
+        self.function_update_raspberry_status=function_update_raspberry_status
         self.url_server=url
         self.url_get_data='/connection/data_flow_available/'
         self.url_put_raspberry_status='/connection/put_raspberry_status/'
@@ -111,14 +112,15 @@ class Communication(Thread):
             self.send_raspberry_status()
         # self.send_humidity_value()
     def send_raspberry_status(self):
-        res,status_message=self.json_post_request_to_page(self.url_put_raspberry_status,self.raspberry_status)
+        dict_status=self.function_update_raspberry_status()
+        res,status_message=self.json_post_request_to_page(self.url_put_raspberry_status,dict_status)
         self.status_message_comm['sent_raspberry_status']=status_message
         if res==404:
             print(self.get_status_message)
-    def set_raspberry_status(self,dictionary):
-        self.raspberry_status=dictionary
+    def set_raspberry_status(self,funcition_update):
+        self.function_update_raspberry_status=funcition_update
     def get_raspberry_status(self):
-        return self.raspberry_status
+        return self.function_update_raspberry_status()
 def print_que(que,message,status):
     buffer_message=""
     while True:
@@ -130,7 +132,9 @@ def print_que(que,message,status):
             print('press c to exit')
         if not que.empty():
             print(que.get())
-
+def update_status():
+    dic_status={'{}'.format(i):i for i in range(10)}
+    return dic_status
 if __name__=='__main__':
     system('clear')
     que_mass_flow=Queue()
@@ -141,7 +145,7 @@ if __name__=='__main__':
     work.start()
     status={'{}'.format(i):i for i in range(10)}
     print(status)
-    comm.set_raspberry_status(status)
+    comm.set_raspberry_status(update_status) # if a variable is just pass, Python make a copy from the variable, so it must be a funcition
     while True:
         c=input("press c to exit: \n")
         if c=='c':
