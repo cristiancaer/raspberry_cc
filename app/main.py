@@ -81,6 +81,9 @@ class App(Thread):
     def get_list_device_i2c_detected(self):
         _,list_device=self.dac.device_detected(chanel=6)
         return list_device
+    def send_raspberry_status(self):
+        dict_status={self.MENU_OPTIONS[i]:self.menu_functions[i]() for i in range(len(self.MENU_OPTIONS))}
+        self.communication.set_raspberry_status(dict_status)
 if __name__=='__main__':
     app=App()
     app.start()
