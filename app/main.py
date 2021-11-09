@@ -73,8 +73,6 @@ class App(Thread):
             traceback.print_exc()
             print('main interrupted')
             self.close()
-    def get_app_message(self):
-        return self.communication.status_message
     def close(self):
         self.app_running=False
         self.communication.running=False
@@ -83,7 +81,8 @@ class App(Thread):
         _,list_device=self.dac.device_detected(chanel=6)
         return list_device
     def update_raspberry_status(self):
-        dict_status={self.MENU_OPTIONS[i]:self.menu_functions[i]() for i in range(len(self.MENU_OPTIONS)-1)}# beware! last option function is gonna to close de app 
+        #all in dictionary must be a strings
+        dict_status={str(self.MENU_OPTIONS[i]):str(self.menu_functions[i]()) for i in range(len(self.MENU_OPTIONS)-1)}# beware! last option function is gonna to close de app 
         return dict_status
 if __name__=='__main__':
     app=App()

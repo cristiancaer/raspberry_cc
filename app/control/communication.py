@@ -115,8 +115,6 @@ class Communication(Thread):
         self.raspberry_status=self.function_update_raspberry_status()
         res,status_message=self.json_post_request_to_page(self.url_put_raspberry_status,self.raspberry_status)
         self.status_message_comm['sent_raspberry_status']=status_message
-        if res==404:
-            print(self.get_status_message)
     def set_raspberry_status(self,funcition_update):
         self.function_update_raspberry_status=funcition_update
     def get_raspberry_status(self):
@@ -133,7 +131,7 @@ def print_que(que,message,status):
         if not que.empty():
             print(que.get())
 def update_status():
-    dic_status={'{}'.format(i):i for i in range(11)}
+    dic_status={'* '*i:i for i in range(20,31)}
     return dic_status
 if __name__=='__main__':
     system('clear')
