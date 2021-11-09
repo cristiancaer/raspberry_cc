@@ -77,7 +77,8 @@ class Communication(Thread):
                     if not data:
                         if  self.watchdog:
                             self.watchdog-=1
-                        else:           
+                        else:
+                            self.que.put(None)           
                             self.status_message_comm['get_last']=self.ERROR_NO_DATA_AVAILABLE
                     else:
                         self.watchdog=5
