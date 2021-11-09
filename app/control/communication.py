@@ -78,7 +78,7 @@ class Communication(Thread):
                         if  self.watchdog:
                             self.watchdog-=1
                         else:
-                            self.que.put(None)           
+                            self.que.put(None) # allow to set voltage output cero when flow_mass application is not load data          
                             self.status_message_comm['get_last']=self.ERROR_NO_DATA_AVAILABLE
                     else:
                         self.watchdog=5
@@ -86,6 +86,8 @@ class Communication(Thread):
                             tag=tag.text.strip()
                             key,value=tag.split(self.separator)
                             info.setdefault(key,value)
+        else:
+            self.que.put(None) # allow to set voltage output cero when the connection is lost
         return info
     def download_data(self):
         info=self.get_last_data()
