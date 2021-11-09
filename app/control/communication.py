@@ -69,7 +69,7 @@ class Communication(Thread):
     def get_last_data(self):
         res,status_message=self.get_request_from_page(self.url_get_data)
         self.status_message_comm['get_last']=status_message
-        info=None
+        info={}
         if self.server_is_working:
             if res.status_code!=404:
                     soup=BeautifulSoup(res.text,'html.parser')

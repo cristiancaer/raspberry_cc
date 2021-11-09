@@ -89,8 +89,8 @@ if __name__=='__main__':
     app.start()
     try: 
         while True:
-            print(app.get_app_message())
-            print("output_voltage: ",app.analog_output.voltage_now)
+            # print(app.get_app_message())
+            # print("output_voltage: ",app.analog_output.voltage_now)
             if not app.app_running:
                 break
             sleep(5)
