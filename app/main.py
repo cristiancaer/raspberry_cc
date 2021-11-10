@@ -84,7 +84,8 @@ class App(Thread):
     def update_raspberry_status(self):
         #all in dictionary must be a strings
         dict_status={str(self.MENU_OPTIONS[i]):str(self.menu_functions[i]()) for i in range(len(self.MENU_OPTIONS)-1)}# beware! last option function is gonna to close de app 
-        dict_status['Time']=datetime.now().strftime('%H:%M:%S')
+        dict_status['datetime']=datetime.now().strftime("%y-%m-%d %H:%M:%S")
+        datetime.now().sr
         return dict_status
 if __name__=='__main__':
     app=App()
